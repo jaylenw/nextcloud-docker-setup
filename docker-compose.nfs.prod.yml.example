@@ -1,0 +1,11 @@
+volumes:
+   nextcloud-html:
+   nextcloud-apps:
+   nextcloud-config:
+   nextcloud-data:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ":/path/to/prod/dir"
+      o: "addr=10.0.0.10,rw,nfsvers=4,async"
+   db:

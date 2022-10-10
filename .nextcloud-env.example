@@ -1,0 +1,12 @@
+# database info
+MYSQL_PASSWORD=
+MYSQL_DATABASE=nextcloud
+MYSQL_USER=nextcloud
+MYSQL_HOST=mariadb
+# the following makes sure the .htacess file is up to date after every container update. Only uncomment this and re-run Docker Compose after the application has been installed or you will run into issues like Nextcloud not starting
+# NEXTCLOUD_INIT_HTACCESS=true
+# set PHP settings as needed, default values are 512M
+PHP_MEMORY_LIMIT=512M
+PHP_UPLOAD_LIMIT=512M
+# redis info
+REDIS_HOST=redis
