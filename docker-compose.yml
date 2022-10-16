@@ -25,7 +25,7 @@ services:
   mariadb:
     image: mariadb:10.5
     env_file: .db-env
-    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+    command: --transaction-isolation=READ-COMMITTED  --log-bin --binlog-format=ROW
     volumes:
       - db:/var/lib/mysql
     restart: unless-stopped
