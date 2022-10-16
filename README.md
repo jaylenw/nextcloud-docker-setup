@@ -40,13 +40,49 @@ Congrats, we've successfully got Nextcloud running with Docker Compose.
 
 ### Local Testing with a Dev NFS
 
+**Caution:** When modifying the Docker volumes settings with Docker Compose, you may have to run `docker compose down -v` for the new
+settings to take place. This will delete EVERYTHING in your volumes if you have something in there (ie. database, Nextcloud data). Please be
+careful running the command, make sure you know what you are doing, and take backups!
+
 1.) Run `docker compose -f docker-compose.yml -f docker-compose.nfs.dev.yml up`.
 
 2.) Refer to the applicable information in the section above.
 
 ### Running in production with a Prod NFS
 
-TBD
+1.) Run `docker compose -f docker-compose.yml -f docker-compose.nfs.prod.yml up`
+
+2.) Configure NGINX to forward traffic to your Nextcloud application. I strongly suggest having a proxy server in front of your Nextcloud docker environment.
+
+Below is an example of a reverse-proxy configuration to get you started using [NGNIX](https://www.nginx.com/).
+*PLEASE CONFIGURE YOUR DEPLOYMENT WITH SSL. You can do so with [Certbot](https://certbot.eff.org/).*
+
+```
+# configuration for nextcloud production environment
+upstream nextcloud-prod-backend {
+    # the nextcloud application in nextcloud container
+    server <localhost or whatever IP>:<port>; # ip and use the port specified in the docker-compose.yml
+    keepalive 64;
+}
+
+server {
+    # the virtual host name of this
+    listen 80;
+    server_name <your-domain-or-subdomain>;
+
+    location / {
+        proxy_pass http://nextcloud-prod-backend;
+        proxy_set_header X-Forwarded-Host $host;
+        proxy_set_header X-Forwarded-Server $host;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $host;
+        # set max upload size, should be the same size as PHP_UPLOAD_LIMIT
+        client_max_body_size 512M;
+    }
+}
+```
+3.) Access your application in the browser and check that all is well.
 
 ###  Running Nextcloud OCC Commands
 

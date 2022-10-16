@@ -10,3 +10,5 @@ PHP_MEMORY_LIMIT=512M
 PHP_UPLOAD_LIMIT=512M
 # redis info
 REDIS_HOST=redis
+# Only use the trusted domains if you are accessing Nextcloud via FQDN, if not, don't include the variable at all
+NEXTCLOUD_TRUSTED_DOMAINS=
