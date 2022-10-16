@@ -57,7 +57,8 @@ careful running the command, make sure you know what you are doing, and take bac
 2.) Configure NGINX to forward traffic to your Nextcloud application. I strongly suggest having a proxy server in front of your Nextcloud docker environment.
 
 Below is an example of a reverse-proxy configuration to get you started using [NGNIX](https://www.nginx.com/).
-*PLEASE CONFIGURE YOUR DEPLOYMENT WITH SSL. You can do so with [Certbot](https://certbot.eff.org/).*
+*PLEASE CONFIGURE YOUR DEPLOYMENT WITH SSL. You can do so with [Certbot](https://certbot.eff.org/). It will take the configuration below
+and modify it to support https.*
 
 ```
 # configuration for nextcloud production environment
@@ -81,14 +82,27 @@ server {
         proxy_set_header Host $host;
         # set max upload size, should be the same size as PHP_UPLOAD_LIMIT
         client_max_body_size 512M;
+        # HSTS policy, tell the browser that this domain must only be accessed using HTTPS, expire every 180 days
+        add_header Strict-Transport-Security "max-age=15552000";
     }
+
+    location /.well-known/carddav {
+        return 301 $scheme://$host/remote.php/dav;
+    }
+
+    location /.well-known/caldav {
+        return 301 $scheme://$host/remote.php/dav;
+    }
+
 }
 ```
 3.) Access your application in the browser and check that all is well.
 
+4.) Once you have confirmed that all is well, you can Ctrl-C Docker Compose and restart it with `docker compose -f docker-compose.yml -f docker-compose.nfs.prod.yml up -d` to have Nextcloud running the background on start on server boot up for example.
+
 ###  Running Nextcloud OCC Commands
 
-Maker sure you have everything running with `docker compose up -d` and then run `docker-compose exec --user www-data app php occ`.
+Maker sure you have everything running with `docker compose up -d` and then run `docker compose exec --user www-data app php occ`.
 
 ----------------------------------------------------------------------------------------------------------
 Made with ♥ in Los Angeles CA.
