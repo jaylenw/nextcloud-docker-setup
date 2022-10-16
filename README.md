@@ -44,13 +44,15 @@ Congrats, we've successfully got Nextcloud running with Docker Compose.
 settings to take place. This will delete EVERYTHING in your volumes if you have something in there (ie. database, Nextcloud data). Please be
 careful running the command, make sure you know what you are doing, and take backups!
 
-1.) Run `docker compose -f docker-compose.yml -f docker-compose.nfs.dev.yml up`.
+1.) Make the necessary changes to the `docker-compose.nfs.dev.yml` file for `device` and `o` under `driver_opts`.
 
-2.) Refer to the applicable information in the section above.
+2.) Run `docker compose -f docker-compose.yml -f docker-compose.nfs.dev.yml up`.
+
+3.) Refer to the applicable information in the section above.
 
 ### Running in production with a Prod NFS
 
-1.) Run `docker compose -f docker-compose.yml -f docker-compose.nfs.prod.yml up`
+1.) Run `docker compose -f docker-compose.yml -f docker-compose.nfs.prod.yml up` after making applicable changes to the `docker-compose.nfs.prod.yml` file.
 
 2.) Configure NGINX to forward traffic to your Nextcloud application. I strongly suggest having a proxy server in front of your Nextcloud docker environment.
 
