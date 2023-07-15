@@ -102,7 +102,7 @@ server {
 
 ###  Running Nextcloud OCC Commands
 
-Maker sure you have everything running with `docker compose up -d` and then run `docker compose exec --user www-data app php occ`.
+Maker sure you have everything running with `docker compose up -d` and then run `docker compose exec --user www-data nextcloud php occ <occ-command>`.
 
 ----------------------------------------------------------------------------------------------------------
 Made with ♥ in Los Angeles CA.
