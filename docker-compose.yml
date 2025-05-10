@@ -23,7 +23,7 @@ services:
     restart: unless-stopped
   
   mariadb:
-    image: mariadb:10.5
+    image: mariadb:10.11
     env_file: .db-env
     command: --transaction-isolation=READ-COMMITTED  --log-bin=mysqld-bin --binlog-format=ROW
     volumes:
